@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: product-service
+  profiles:
+    active: localhost
+  main:
+    allow-bean-definition-overriding: true
+info:
+  component: Product Service
+server:
+  port: 9788
+
+logging:
+  level:
+    com.jackal: DEBUG
+---
+spring:
+  config:
+    activate:
+      on-profile: localhost
+  cloud:
+    config:
+      uri: http://localhost:8888
+  jpa:
+    hibernate:
+      ddl-auto: update
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        default_schema: stock_management
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/stock_management
+    username: postgres
+    password: 123456
