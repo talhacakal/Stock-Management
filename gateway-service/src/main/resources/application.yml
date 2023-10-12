@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: api-gateway
+  profiles:
+    active: localhost
+server:
+  port: 8080
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: localhost
+  cloud:
+    gateway:
+      routes:
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/product-service/**
+          filters:
+            - StripPrefix=1
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
