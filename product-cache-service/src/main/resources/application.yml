@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: product-cache-service
+  profiles:
+    active: localhost
+  main:
+    allow-bean-definition-overriding: true
+info:
+  component: Product Cache Service
+logging:
+  level:
+    root:
+    com.jackal: DEBUG
+server:
+  port: 9791
+---
+spring:
+  config:
+    activate:
+      on-profile: localhost
+feign:
+  product-service:
+    name: product-service
+    url: http://localhost:8080/product-service
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
