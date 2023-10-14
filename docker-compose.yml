@@ -28,7 +28,34 @@ services:
     networks:
       - spring-cloud-network
     restart: unless-stopped
-  
+
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis
+    volumes:
+      - "../data/redis:/var/lib/redis/data"
+    networks:
+      - spring-cloud-network
+    expose:
+      - 6379
+    ports:
+      - 6379:6379
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 20s
+        max_attempts: 3
+        window: 120s
+      resources:
+        reservations:
+          cpus: "0.50"
+          memory: 512M
+        limits:
+          cpus: "1.0"
+          memory: 1G
+
   product-service:
     image: product-service
     container_name: product-service
@@ -108,7 +135,6 @@ services:
 networks:
   spring-cloud-network:
     driver: bridge
-
 
 volumes:
   postgres:
