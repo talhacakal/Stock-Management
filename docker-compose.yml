@@ -82,6 +82,32 @@ services:
           memory: 1G
     entrypoint: ["java","-jar","/product-service-1.0.0.jar"]
 
+  product-cache-service:
+    image: product-cache-service
+    container_name: product-cache-service
+    hostname: product-cache-service
+    environment:
+      SPRING_PROFILES_ACTIVE: stage
+    ports:
+      - "9791:9791"
+    networks:
+      - spring-cloud-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      resources:
+        reservations:
+          cpus: "0.50"
+          memory: 512M
+        limits:
+          cpus: "1.0"
+          memory: 1G
+    entrypoint: [ "java","-jar","/product-cache-service-1.0.0.jar" ]
+
   gateway-service:
     image: gateway-service
     container_name: gateway-service

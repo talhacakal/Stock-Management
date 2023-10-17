@@ -3,6 +3,25 @@ spring:
     name: api-gateway
   profiles:
     active: localhost
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      routes:
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/1.0/product-service/**
+          filters:
+            - StripPrefix=1
+
+        - id: product-cache-service
+          uri: lb://product-cache-service
+          predicates:
+            - Path=/api/1.0/product-cache-service/**
+          filters:
+            - StripPrefix=1
+
 server:
   port: 8080
 
@@ -12,15 +31,6 @@ spring:
   config:
     activate:
       on-profile: localhost
-  cloud:
-    gateway:
-      routes:
-        - id: product-service
-          uri: lb://product-service
-          predicates:
-            - Path=/product-service/**
-          filters:
-            - StripPrefix=1
 eureka:
   instance:
     instance-id: ${spring.application.name}:${server.port}
@@ -35,15 +45,6 @@ spring:
   config:
     activate:
       on-profile: stage
-  cloud:
-    gateway:
-      routes:
-        - id: product-service
-          uri: lb://product-service
-          predicates:
-            - Path=/product-service/**
-          filters:
-            - StripPrefix=1
 eureka:
   instance:
     instance-id: ${spring.application.name}:${server.port}

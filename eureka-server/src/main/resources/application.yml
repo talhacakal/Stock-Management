@@ -8,30 +8,30 @@ spring:
   config:
     activate:
       on-profile: localhost
-    import: optional:configserver:http://localhost:8888
+#    import: optional:configserver:http://localhost:8888
 
-#server:
-#  port: 8761
+server:
+  port: 8761
 
 eureka:
   instance:
     appname: eureka-server
-#    hostname: eureka-server
-#  client:
-#    register-with-eureka: false
-#    fetch-registry: false
-#    service-url:
-#      default-zone: http://${eureka.instance.hostname}:${server.port}/eureka
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      default-zone: http://${eureka.instance.hostname}:${server.port}/eureka
 
 ---
 spring:
   config:
     activate:
       on-profile: stage
-    import: optional:configserver:http://localhost:8888
+#    import: optional:configserver:http://localhost:8888
 
-#server:
-#  port: 8761
+server:
+  port: 8761
 
 eureka:
   instance:
@@ -43,6 +43,4 @@ eureka:
     fetch-registry: false
     service-url:
       default-zone: http://${eureka.instance.hostname}:${server.port}/eureka
-server:
-  port: 8761
 
